@@ -1,6 +1,6 @@
 package com.bridgeit.util;
 
-public class EmailAlreadyExistException  extends RuntimeException{
+public class EmailAlreadyExistException  extends Exception{
 	
 		
 		private static final long serialVersionUID = 1L;

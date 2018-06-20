@@ -37,8 +37,12 @@ public class SendEmail {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
             message.setSubject(subject);
-            message.setText(msg);
-           
+            //message.setContent("text/html");
+            message.setText("\tWe receive your request for registration. \n \n "+
+                    "\tPlease click the Link to complete the registration\n"
+                    + msg);
+            
+            
             //send message  
             Transport.send(message);
             System.out.println("message sent successfully");
@@ -51,4 +55,5 @@ public class SendEmail {
 	}
 	
 }
+
 

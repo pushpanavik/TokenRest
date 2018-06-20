@@ -14,7 +14,7 @@
     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven></mvc:annotation-driven>
 	 <tx:annotation-driven transaction-manager="txManager" />
 	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 	
@@ -46,7 +46,5 @@
 	<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="factory"></property>
 	</bean>
-	
-	
 	
 </beans>

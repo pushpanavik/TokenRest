@@ -14,12 +14,13 @@ public class Tokens {
 		Date currentDate=new Date(currentTime);
 		Date expireDate=new Date(currentTime+ 24*60*60*1000);
 		
+		
 		String getToken=Jwts.builder()
 				.setId(Integer.toString(id))
 				.setIssuedAt(currentDate)
 				.setExpiration(expireDate)
 				.signWith(SignatureAlgorithm.HS256,KEY)
-				.compact();
+				.compact().toString();
 		
 		return getToken;
 	}

@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.Range;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table
@@ -16,19 +16,34 @@ public class User {
 	@GeneratedValue
 	private int id; 
 	@Column
+	@NotEmpty(message=" please provide username ")
 	
 	private String username;
 	
 	@Column(name = "enabled")
 	private boolean enabled;
+	
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public User()
 	{
 		super();
 		this.enabled=false;
 	}
 	@Column
+	@NotEmpty(message="please provide password")
 	private String password;
-	@Column
+	
+	@Column(nullable=false, unique=true)
+	@NotEmpty(message="email not cannot be blank")
+	@Email(message="please enter a valid email")
 	private String email;
 	
 	public int getId() {

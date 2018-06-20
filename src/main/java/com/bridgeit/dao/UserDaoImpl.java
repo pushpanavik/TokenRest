@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bridgeit.model.User;
 
 @Repository
-@Transactional
+
 public class UserDaoImpl implements IUserDao {
 	
 	public UserDaoImpl() {
@@ -27,7 +27,7 @@ public class UserDaoImpl implements IUserDao {
 	private SessionFactory factory;
 	
 	public int addUser(User user) {
-		Session session=factory.getCurrentSession();
+		Session session=factory.openSession();
 		Transaction tx=session.beginTransaction();
 		int id=(Integer)session.save(user);
 		
@@ -37,9 +37,10 @@ public class UserDaoImpl implements IUserDao {
 		return id;
 	}
 
+	@SuppressWarnings("deprecation")
 	public User validateUser(User user) {
 		
-		Session session=factory.getCurrentSession();
+		Session session=factory.openSession();
 		Criteria crite=session.createCriteria(User.class);
 		Criterion email=Restrictions.eq("email", user.getEmail());
 		Criterion password=Restrictions.eq("password", user.getPassword());
@@ -52,9 +53,11 @@ public class UserDaoImpl implements IUserDao {
 		return reg;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> checkEmailId(String Email) {
 		
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
+		@SuppressWarnings("deprecation")
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.eq("email", Email));
 		List<User> userList = criteria.list();
@@ -64,14 +67,12 @@ public class UserDaoImpl implements IUserDao {
 	@Override
 	public User getUserByEmaiId(String email) {
 		
+		
 		System.out.println("goes inside getuser by email id");
 		
-		Session session=factory.getCurrentSession();
+		Session session=factory.openSession();
 		@SuppressWarnings("deprecation")
-		Criteria criteria=session.createCriteria(User.class);
-		
-		criteria.add(Restrictions.eq("email",email));
-		
+		Criteria criteria=session.createCriteria(User.class).add(Restrictions.eq("email",email));
 		User userobj=(User)criteria.uniqueResult();
 				return userobj;
 	}

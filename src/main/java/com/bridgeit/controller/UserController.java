@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,13 +23,9 @@ import com.bridgeit.util.Response;
 public class UserController {
 	
 	@Autowired
-	IUserService userservice;
+	private IUserService userservice;
    
-	@RequestMapping("/")
-	public ModelAndView displayHome()
-	{
-	 return new ModelAndView("redirect:/user");	
-	}
+	
 	@RequestMapping(value="/user", method=RequestMethod.POST)
 	public ResponseEntity<?> registerUser(@RequestBody User user,HttpServletRequest request)throws EmailAlreadyExistException
 	{
@@ -47,12 +45,11 @@ public class UserController {
 				}
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public ResponseEntity<?> loginUser(@RequestBody User user,HttpServletRequest request, HttpServletResponse response){
-		
+	@RequestMapping(value="login", method=RequestMethod.POST)
+	public ResponseEntity<?> loginUser(@RequestBody User user,HttpServletRequest request, HttpServletResponse response ){		
 		System.out.println("comes under login method");
 		Response res=new Response();
-		
+		user.setEnabled(false);
 		String token=userservice.validateUser(user);
 		
 		if(token!=null)
@@ -69,6 +66,12 @@ public class UserController {
 		
 		return new ResponseEntity<String>("Invalid username or password",HttpStatus.NOT_FOUND);
 		
+	}
+	
+	@RequestMapping(value="/tokenvalue/{token}",method=RequestMethod.GET)
+	public ResponseEntity<?> token(@PathVariable("token") String token){
+		System.out.println("user clicks the link");
+		return new ResponseEntity<>(token,HttpStatus.OK);
 	}
 	
 	
